@@ -1,0 +1,6 @@
+*.o
+.vscode/
+main
+event
+priorityQueue
+.swp
