@@ -8,6 +8,22 @@ PriorityQueue::~PriorityQueue()
     clear();
 }
 
+void PriorityQueue::dequeue()
+{
+    if (!head)
+    {
+        cout << "Queue is empty\n";
+        return;
+    }
+    Node *temp = head;
+    head = head->next;
+    if (head)
+    {
+        head->prev = nullptr; 
+    }
+    delete temp;
+}
+
 void PriorityQueue::insert(Event event)
 {
     Node *newEvent = new Node(event);
