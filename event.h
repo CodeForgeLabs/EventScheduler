@@ -7,7 +7,7 @@ struct Event
 {
     string name;
     string date;
-    string time;
+    string event_time;
     int priority;
 
     void print();
@@ -23,7 +23,7 @@ struct Event
 
     Event() {}; //default constructor
 
-    Event(string n, string d, string t, int p) : name(n), date(d), time(t), priority(p) {};
+    Event(string n, string d, string t, int p) : name(n), date(d), event_time(t), priority(p) {};
 };
 
 #endif

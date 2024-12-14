@@ -13,13 +13,13 @@ bool Event::operator<(const Event& other) const {
         if (date != other.date) {
             return date > other.date;
         } else {
-            return time > other.time;
+            return event_time > other.event_time;
         }
     }
 }
 
 Event Event::AddEvent() {
-    string name, date, time;
+    string name, date, event_time;
     int priority;
     cout << "Add name of event: ";
     cin >> name;
@@ -37,15 +37,24 @@ Event Event::AddEvent() {
         }
         else
         {
-            break;
+            time_t now = time(0);
+            tm* now_tm = localtime(&now);
+            if (mktime(&date_tm) <= mktime(now_tm))
+            {
+                cout << "The date is in the past. Please enter a future date." << endl;
+            }
+            else
+            {
+                break;
+            }
         }
     }
     tm time_tm = {};
     while (true)
     {
         cout << "Set time of event (HH:MM): ";
-        cin >> time;
-        stringstream ss(time);
+        cin >> event_time;
+        stringstream ss(event_time);
         ss >> get_time(&time_tm, "%H:%M");
         if (ss.fail())
         {
@@ -70,13 +79,13 @@ Event Event::AddEvent() {
         }
     }
 
-    return Event(name, date, time, priority);
+    return Event(name, date, event_time, priority);
 }
 
 void Event::print()
 {
     cout << "Name: " << name << 
             ", Date: " << date << 
-            ", Time: " << time << 
+            ", Time: " << event_time << 
             ", Priority: " << priority << endl;
 }
