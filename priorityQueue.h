@@ -30,6 +30,8 @@ public:
     bool isEmpty() ;
     void clear();
     void print();
+    Node *findEventByName(string &name);
+    void updateEvent(Node *node,Event& newEvent);
 };
 
 #endif

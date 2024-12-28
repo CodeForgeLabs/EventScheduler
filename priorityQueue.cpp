@@ -8,6 +8,27 @@ PriorityQueue::~PriorityQueue()
     clear();
 }
 
+Node* PriorityQueue::findEventByName(string &name){
+    Node *ptr = head;
+    while (ptr)
+    {
+        if (ptr->event.name == name)
+        {
+            return ptr;
+        }
+        ptr = ptr->next;
+    }
+    return nullptr;
+}
+
+void PriorityQueue::updateEvent(Node *node,Event &newEvent){
+    if (node)
+    {
+       node->event = newEvent;
+    }
+    
+}
+
 void PriorityQueue::dequeue()
 {
     if (!head)

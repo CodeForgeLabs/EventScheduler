@@ -52,9 +52,21 @@ int main()
             break;
         case 4:
         {
-            cout << "Coming soon!\n";
+            cout << "Enter the name of the event to edit: ";
+            string eventName;
+            cin >> eventName;
+            Node *eventNode = eventQueue.findEventByName(eventName);
+            if (eventNode)
+            {
+                cout << "Editing event: " << eventName << endl;
+                Event updatedEvent = Event::AddEvent();
+                eventQueue.updateEvent(eventNode, updatedEvent);
+            }
+            else
+            {
+                cout << "Event not found." << endl;
+            }
             break;
-            
         }
         case 5:
         {
