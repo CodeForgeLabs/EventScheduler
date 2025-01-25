@@ -6,14 +6,14 @@
 
 using namespace std;
 
-bool Event::operator<(const Event& other) const {
+bool Event::operator>(const Event& other) const {
     if (priority != other.priority) {
-        return priority < other.priority;
+        return priority > other.priority;
     } else {
         if (date != other.date) {
-            return date > other.date;
+            return date < other.date;
         } else {
-            return event_time > other.event_time;
+            return event_time < other.event_time;
         }
     }
 }
