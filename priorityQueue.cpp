@@ -1,109 +1,147 @@
-#include "priorityQueue.h"
+#include <vector>
 #include <iostream>
+#include "event.h" 
 
 using namespace std;
 
-PriorityQueue::~PriorityQueue()
+class PriorityQueue
 {
-    clear();
-}
+private:
+    vector<Event> heap;
+    int size;
 
-Node* PriorityQueue::findEventByName(string &name){
-    Node *ptr = head;
-    while (ptr)
+    int parent(int i)
     {
-        if (ptr->event.name == name)
+        return (i - 1) / 2;
+    }
+
+    int leftChild(int i)
+    {
+        return 2 * i + 1;
+    }
+
+    int rightChild(int i)
+    {
+        return 2 * i + 2;
+    }
+
+    void heapifyUp(int index)
+    {
+        while (index != 0 && heap[index] > heap[parent(index)])
         {
-            return ptr;
+            swap(heap[index], heap[parent(index)]);
+            index = parent(index);
         }
-        ptr = ptr->next;
     }
-    return nullptr;
-}
 
-void PriorityQueue::updateEvent(Node *node,Event &newEvent){
-    if (node)
+    void heapifyDown(int index)
     {
-       node->event = newEvent;
-    }
-    
-}
+        int largest = index;
+        int left = leftChild(index);
+        int right = rightChild(index);
 
-void PriorityQueue::dequeue()
-{
-    if (!head)
+        if (left < heap.size() && heap[left] > heap[largest])
+            largest = left;
+
+        if (right < heap.size() && heap[right] > heap[largest])
+            largest = right;
+
+        if (largest != index)
+        {
+            swap(heap[index], heap[largest]);
+            heapifyDown(largest);
+        }
+    }
+
+public:
+    PriorityQueue() {};
+
+    void clear(){
+        heap.clear();
+    }
+
+    Event *findEventByName(const string &name)
     {
-        cout << "Queue is empty\n";
-        return;
+        for (auto &event : heap)
+        {
+            if (event.name == name)
+            {
+                return &event;
+            }
+        }
+        return nullptr;
     }
-    Node *temp = head;
-    head = head->next;
-    if (head)
+
+    void updateEvent(Event *event, const Event &newEvent)
     {
-        head->prev = nullptr; 
+        if (event)
+        {
+            *event = newEvent;
+            // After updating, reheapify if needed
+            heapifyDown(findEventIndex(event));
+            heapifyUp(findEventIndex(event));
+        }
     }
-    delete temp;
-}
 
-void PriorityQueue::insert(Event event)
-{
-    Node *newEvent = new Node(event);
-
-    if (!head || head->event < event )
+    int findEventIndex(Event *event)
     {
-        newEvent->next = head;
-        head = newEvent;
-        return;
+        for (int i = 0; i < heap.size(); ++i)
+        {
+            if (&heap[i] == event)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
-    Node *ptr = head;
-    while (ptr->next && !(ptr->next->event < event))
+    void enqueue(Event event)
     {
-        ptr = ptr->next;
+        heap.push_back(event);
+        heapifyUp(heap.size() - 1);
     }
 
-    newEvent->next = ptr->next;
-    ptr->next = newEvent;
-}
-
-Node *PriorityQueue::peek()
-{
-    if (head)
+    Event dequeue()
     {
-        return head;
+        if (heap.empty())
+        {
+            cout << "Heap is empty\n";
+            return Event(); 
+        }
+
+        Event maxValue = heap[0];
+        heap[0] = heap.back();
+        heap.pop_back();
+        heapifyDown(0); 
+        return maxValue;
     }
 
-    cout << "Queue is empty\n";
-    return nullptr;
-}
-
-bool PriorityQueue::isEmpty()
-{
-    return !head;
-}
-
-void PriorityQueue::print()
-{
-    if (!head)
+    Event peek()
     {
-        cout << "Queue is empty\n";
-        return;
+        if (heap.empty())
+        {
+            cout << "Heap is empty" << endl;
+            return Event(); 
+        }
+        return heap[0];
     }
 
-    Node *ptr = head;
-    while (ptr)
+    bool isEmpty()
     {
-        ptr->event.print();
-        ptr = ptr->next;
+        return heap.empty();
     }
-}
 
-void PriorityQueue::clear()
-{
-    while (head)
+    int getSize() const
     {
-        Node *temp = head;
-        head = head->next;
-        delete temp;
+        return heap.size();
     }
-}
+
+    void printQueue()
+    {
+        for ( auto &event : heap)
+        {
+            event.print(); 
+        }
+        cout << endl;
+    }
+};

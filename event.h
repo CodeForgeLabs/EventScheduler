@@ -12,7 +12,7 @@ struct Event
 
     void print();
 
-    bool operator<(const Event &other) const;
+    bool operator>(const Event &other) const;
     /*
     this is used to overload the ">" operator so when comparing events
     we can compare the events themselves like event1 >event2 instead 

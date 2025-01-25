@@ -1,5 +1,5 @@
 #include <iostream>
-#include "priorityQueue.h"
+#include "priorityQueue.cpp"
 #include "event.h"
 #include <limits>
 
@@ -35,32 +35,36 @@ int main()
         case 1:
         {
             Event newEvent = Event::AddEvent();
-            eventQueue.insert(newEvent);
+            eventQueue.enqueue(newEvent);
             break;
         }
         case 2:
         {
-            Node *nextEvent = eventQueue.peek();
-            if (nextEvent)
+            Event nextEvent = eventQueue.peek();
+            if (!nextEvent.name.empty()) // Check if there's an event
             {
-                nextEvent->event.print();
+                nextEvent.print();
+            }
+            else
+            {
+                cout << "No events in the queue.\n";
             }
             break;
         }
         case 3:
-            eventQueue.print();
+            eventQueue.printQueue();
             break;
         case 4:
         {
             cout << "Enter the name of the event to edit: ";
             string eventName;
             cin >> eventName;
-            Node *eventNode = eventQueue.findEventByName(eventName);
-            if (eventNode)
+            Event *eventToEdit = eventQueue.findEventByName(eventName);
+            if (eventToEdit)
             {
                 cout << "Editing event: " << eventName << endl;
                 Event updatedEvent = Event::AddEvent();
-                eventQueue.updateEvent(eventNode, updatedEvent);
+                eventQueue.updateEvent(eventToEdit, updatedEvent);
             }
             else
             {
@@ -74,15 +78,18 @@ int main()
             break;
         }
         case 6:
-        if (eventQueue.isEmpty())
         {
-            cout << "Queue is Empty!\n";
-            break;
-        }
-        else
-        {
-            eventQueue.clear();
-            break;
+            if (eventQueue.isEmpty())
+            {
+                cout << "Queue is Empty!\n";
+                break;
+            }
+            else
+            {
+                eventQueue.clear();
+                cout << "All events cleared.\n";
+                break;
+            }
         }
         case 7:
             cout << "Instructions:\n";
