@@ -1,26 +1,61 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
-#include "event.h"
 #include <limits>
+#include <string>
+#include <ctime>
+#include "event.h"
 
 using namespace std;
 
-bool Event::operator>(const Event& other) const {
-    if (priority != other.priority) {
+
+
+//intializing static counter
+int Event::nextId = 0;
+
+bool Event::operator>(const Event &other) const
+{
+    if (priority != other.priority)
+    {
         return priority > other.priority;
-    } else {
-        if (date != other.date) {
+    }
+    else
+    {
+        if (date != other.date)
+        {
             return date < other.date;
-        } else {
+        }
+        else
+        {
             return event_time < other.event_time;
         }
     }
 }
 
-Event Event::AddEvent() {
+bool Event::operator<(const Event &other) const
+{
+    if (priority != other.priority)
+    {
+        return priority < other.priority;
+    }
+    else
+    {
+        if (date != other.date)
+        {
+            return date > other.date;
+        }
+        else
+        {
+            return event_time > other.event_time;
+        }
+    }
+}
+
+Event Event::AddEvent()
+{
     string name, date, event_time;
     int priority;
+    nextId += 1;
     cout << "Add name of event: ";
     cin >> name;
     tm date_tm = {};
@@ -38,7 +73,7 @@ Event Event::AddEvent() {
         else
         {
             time_t now = time(0);
-            tm* now_tm = localtime(&now);
+            tm *now_tm = localtime(&now);
             if (mktime(&date_tm) <= mktime(now_tm))
             {
                 cout << "The date is in the past. Please enter a future date." << endl;
@@ -66,14 +101,18 @@ Event Event::AddEvent() {
             break;
         }
     }
-    while (true) {
+    while (true)
+    {
         cout << "Set priority of event: ";
         cin >> priority;
-        if (cin.fail()) {
+        if (cin.fail())
+        {
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cout << "Invalid input. Please enter a number." << endl;
-        } else {
+        }
+        else
+        {
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             break;
         }
@@ -82,10 +121,12 @@ Event Event::AddEvent() {
     return Event(name, date, event_time, priority);
 }
 
-void Event::print()
+// Print method
+void Event::print() const
 {
-    cout << "Name: " << name << 
-            ", Date: " << date << 
-            ", Time: " << event_time << 
-            ", Priority: " << priority << endl;
+    cout << "ID: " << id
+         << ", Name: " << name
+         << ", Date: " << date
+         << ", Time: " << event_time
+         << ", Priority: " << priority << endl;
 }

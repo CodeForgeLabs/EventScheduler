@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include "event.h" 
+#include <unordered_map>
 
 using namespace std;
 
@@ -8,6 +9,7 @@ class PriorityQueue
 {
 private:
     vector<Event> heap;
+    unordered_map<int,int> eventIndexMap;
     int size;
 
     int parent(int i)
@@ -27,9 +29,11 @@ private:
 
     void heapifyUp(int index)
     {
-        while (index != 0 && heap[index] > heap[parent(index)])
-        {
+        while (index != 0 && heap[parent(index)] < heap[index])
+        { 
             swap(heap[index], heap[parent(index)]);
+            eventIndexMap[heap[index].id] = index; //updating the map with the correct index               
+            eventIndexMap[heap[parent(index)].id] = parent(index);  //updating the map with the correct index for the parent 
             index = parent(index);
         }
     }
@@ -40,15 +44,17 @@ private:
         int left = leftChild(index);
         int right = rightChild(index);
 
-        if (left < heap.size() && heap[left] > heap[largest])
+        if (left < heap.size() && heap[left] > heap[largest]) 
             largest = left;
 
-        if (right < heap.size() && heap[right] > heap[largest])
+        if (right < heap.size() && heap[right] > heap[largest]) 
             largest = right;
 
         if (largest != index)
         {
             swap(heap[index], heap[largest]);
+            eventIndexMap[heap[index].id] = index;      
+            eventIndexMap[heap[largest].id] = largest; 
             heapifyDown(largest);
         }
     }
@@ -58,14 +64,23 @@ public:
 
     void clear(){
         heap.clear();
+        eventIndexMap.clear();
     }
 
-    Event *findEventByName(const string &name)
+    Event *findEventById(int id)
     {
-        for (auto &event : heap)
+       if (eventIndexMap.find(id) != eventIndexMap.end())
+       {
+        return &heap[eventIndexMap[id]];
+       }
+       return nullptr;
+    }
+
+    Event *findEventByName(string name)
+    {
+        for (auto &event : heap )
         {
-            if (event.name == name)
-            {
+            if(event.name == name){
                 return &event;
             }
         }
@@ -77,7 +92,7 @@ public:
         if (event)
         {
             *event = newEvent;
-            // After updating, reheapify if needed
+
             heapifyDown(findEventIndex(event));
             heapifyUp(findEventIndex(event));
         }
