@@ -2,6 +2,9 @@
 #include <iostream>
 #include "event.h" 
 #include <unordered_map>
+#include <fstream>
+#include <sstream>
+#include <string>
 
 using namespace std;
 
@@ -65,6 +68,83 @@ public:
     void clear(){
         heap.clear();
         eventIndexMap.clear();
+    }
+
+    void saveToFile(const string &filename) const
+    {
+        ofstream file(filename);
+        if (!file.is_open())
+        {
+           cout << "Error occurred while saving to file\n";
+        }
+
+        file << "EventID" << ","
+             << "Name" << ","
+             << "Date" << ","
+             << "Event_Time" << ","
+             << "Priority" << "\n";
+
+        for (const auto &event : heap)
+        {
+            file << event.id << ","
+                 << event.name << ","
+                 << event.date << ","
+                 << event.event_time << ","
+                 << event.priority << "\n";
+        }
+
+        file.close();
+    }
+
+    void loadFromFile(const string &filename)
+    {
+        ifstream file(filename);
+        if (!file.is_open())
+        {
+           cout << "Error when loading file";
+        }
+
+        string line;
+        getline(file, line); // Skip header 
+
+
+        while (getline(file, line))
+        {
+            stringstream ss(line);
+            string idStr, name, date, event_time, priorityStr;
+
+            // Parse each field
+            getline(ss, idStr, ',');
+            getline(ss, name, ',');
+            getline(ss, date, ',');
+            getline(ss, event_time, ',');
+            getline(ss, priorityStr, ',');
+
+            //TODO : when loading events from file , id replication issue might occur
+
+            // Convert strings to int 
+            int id = stoi(idStr);
+            int priority = stoi(priorityStr);
+
+
+            Event event(name, date, event_time, priority);
+            event.id = id; 
+            enqueue(event);
+        }
+        file.clear();
+        file.close();
+    }
+
+    void clearFromFile(const string&filename){
+        ofstream file(filename);
+        if (!file.is_open())
+        {
+            cout << "Error opening file\n" << endl;
+            return;
+        }
+
+        file.clear();
+        
     }
 
     Event *findEventById(int id)
@@ -157,6 +237,5 @@ public:
         {
             event.print(); 
         }
-        cout << endl;
     }
 };

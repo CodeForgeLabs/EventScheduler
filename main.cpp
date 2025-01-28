@@ -9,6 +9,8 @@ int main()
 {
     PriorityQueue eventQueue;
     bool flag = true;
+    string filename = "events.txt";
+    eventQueue.loadFromFile(filename);
 
     while (flag)
     {
@@ -87,6 +89,7 @@ int main()
             else
             {
                 eventQueue.clear();
+                eventQueue.clearFromFile(filename);
                 cout << "All events cleared.\n";
                 break;
             }
@@ -103,6 +106,7 @@ int main()
             cout << "8. Exit: Exit the scheduler.\n";
             break;
         case 8:
+            eventQueue.saveToFile(filename);
             flag = false;
             break;
         default:
