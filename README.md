@@ -37,9 +37,16 @@ It uses a priority queue to ensure that events are processed based on their prio
    cd EventScheduler
    make
    ```
+   or alternatively run the following command
+   ```sh
+   cd EventScheduler
+   g++ main.o priorityQueue.o event.o -o main
+   ```
+   
 
 3. Run the executable
 
    ```sh
    ./main
    ```
+
