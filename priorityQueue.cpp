@@ -6,6 +6,13 @@
 #include <sstream>
 #include <string>
 
+// Color codes
+#define RESET "\033[0m"
+#define CYAN "\033[1;36m"
+#define GREEN "\033[1;32m"
+#define YELLOW "\033[1;33m"
+#define RED "\033[1;31m"
+
 using namespace std;
 
 class PriorityQueue
@@ -75,7 +82,7 @@ public:
         ofstream file(filename);
         if (!file.is_open())
         {
-           cout << "Error occurred while saving to file\n";
+           cout << RED << "Error occurred while saving to file\n";
         }
 
         file << "EventID" << ","
@@ -101,7 +108,7 @@ public:
         ifstream file(filename);
         if (!file.is_open())
         {
-           cout << "Error when loading file";
+           cout << RED << "Error when loading file";
         }
 
         string line;
@@ -139,7 +146,7 @@ public:
         ofstream file(filename);
         if (!file.is_open())
         {
-            cout << "Error opening file\n" << endl;
+            cout << RED << "Error opening file\n" << endl;
             return;
         }
 
@@ -198,9 +205,9 @@ public:
 
     Event dequeue()
     {
-        if (heap.empty())
+        if (isEmpty())
         {
-            cout << "Heap is empty\n";
+            cout <<  RED <<  "Heap is empty\n";
             return Event(); 
         }
 
@@ -213,9 +220,9 @@ public:
 
     Event peek()
     {
-        if (heap.empty())
+        if (isEmpty())
         {
-            cout << "Heap is empty" << endl;
+            cout << RED << "Heap is empty" << endl;
             return Event(); 
         }
         return heap[0];
@@ -233,6 +240,12 @@ public:
 
     void printQueue()
     {
+        if (isEmpty())
+        {
+            cout << RED << "Queue is Empty" << endl;
+            return;
+        }
+        
         for ( auto &event : heap)
         {
             event.print(); 

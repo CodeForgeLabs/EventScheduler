@@ -6,6 +6,16 @@
 #include <ctime>
 #include "event.h"
 
+// Color codes
+#define RESET "\033[0m"      
+#define CYAN "\033[1;36m"    
+#define WHITE "\033[1;37m"   
+#define YELLOW "\033[1;33m"
+#define BLUE "\033[1;34m"
+#define GREEN "\033[1;32m"
+#define MAGENTA "\033[1;35m" 
+#define RED "\033[1;31m"
+
 using namespace std;
 
 
@@ -67,7 +77,7 @@ Event Event::AddEvent()
         ss >> get_time(&date_tm, "%Y-%m-%d");
         if (ss.fail())
         {
-            cout << "Invalid date format. Please try again." << endl;
+            cout << RED << "Invalid date format. Please try again." << endl;
             ss.clear();
         }
         else
@@ -76,7 +86,7 @@ Event Event::AddEvent()
             tm *now_tm = localtime(&now);
             if (mktime(&date_tm) <= mktime(now_tm))
             {
-                cout << "The date is in the past. Please enter a future date." << endl;
+                cout << RED << "The date is in the past. Please enter a future date." << endl;
             }
             else
             {
@@ -93,7 +103,7 @@ Event Event::AddEvent()
         ss >> get_time(&time_tm, "%H:%M");
         if (ss.fail())
         {
-            cout << "Invalid time format. Please try again." << endl;
+            cout << RED << "Invalid time format. Please try again." << endl;
             ss.clear();
         }
         else
@@ -109,7 +119,7 @@ Event Event::AddEvent()
         {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Invalid input. Please enter a number." << endl;
+            cout <<  RED << "Invalid input. Please enter a number." << endl;
         }
         else
         {
@@ -124,9 +134,12 @@ Event Event::AddEvent()
 // Print method
 void Event::print() const
 {
-    cout << "ID: " << id
-         << ", Name: " << name
-         << ", Date: " << date
-         << ", Time: " << event_time
-         << ", Priority: " << priority << endl;
+    string priorityColor = (priority > 100) ? RED : (priority > 50) ? MAGENTA
+                                                                    : GREEN;
+
+    cout << WHITE << "ID: " << id << ", "
+         << YELLOW << "Name: " << name << ", "
+         << BLUE << "Date: " << date << ", Time: " << event_time << ", "
+         << priorityColor << "Priority: " << priority
+         << RESET << endl;
 }
