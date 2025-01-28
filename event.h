@@ -16,9 +16,9 @@ struct Event
     bool operator>(const Event &other) const;
     bool operator<(const Event &other) const;
     /*
-    this is used to overload the ">" operator so when comparing events
-    we can compare the events themselves like event1 >event2 instead 
-    of event1.priority > event2.priority
+    these are used to overload the ">" operator  and "<" operators so when comparing events
+    we can compare the events themselves like event1 >event2  or event1 < event2 instead 
+    of event1->priority > event2->priority
     */
     static int nextId;
     static Event AddEvent();

@@ -5,6 +5,13 @@
 
 using namespace std;
 
+// Color codes
+#define RESET "\033[0m"
+#define CYAN "\033[1;36m"
+#define GREEN "\033[1;32m"
+#define YELLOW "\033[1;33m"
+#define RED "\033[1;31m"
+
 int main()
 {
     PriorityQueue eventQueue;
@@ -14,22 +21,25 @@ int main()
 
     while (flag)
     {
-        cout << "---------Menu---------" << endl;
-        cout << "1. Add Event\n";
-        cout << "2. View Next Event\n";
-        cout << "3. Print All Events\n";
-        cout << "4. Edit Event\n";
-        cout << "5. Remove Next Event\n";
-        cout << "6. Clear All Events\n";
-        cout << "7. Help/Instructions\n";
-        cout << "8. Exit\n";
-        cout << "Enter your choice: ";
+        cout << CYAN << "\n-------------Menu--------------\n"
+             << RESET;
+        cout << GREEN << "1.  Add Event\n";
+        cout << "2.  View Next Event\n";
+        cout << "3.  Print All Events\n";
+        cout << "4.  Edit Event\n";
+        cout << "5.  Remove Next Event\n";
+        cout << "6.  Clear All Events\n";
+        cout << "7.  Help/Instructions\n";
+        cout << "8.  Exit\n\n"
+             << RESET;
+
+        cout << YELLOW << "Enter your menu selection (1-8): " << RESET;
         int choice;
         while (!(cin >> choice))
         {
             cin.clear();                                         // Clear the error flag
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore invalid input
-            cout << "Invalid input. Please enter a number between 1 and 8: ";
+            cout << RED << "Invalid input. Please enter a number between 1 and 8: " << RESET;
         }
 
         switch (choice)
@@ -42,35 +52,40 @@ int main()
         }
         case 2:
         {
+            cout << CYAN << "\nNext Event:\n"
+                 << RESET;
             Event nextEvent = eventQueue.peek();
-            if (!nextEvent.name.empty()) // Check if there's an event
+            if (!nextEvent.name.empty())
             {
                 nextEvent.print();
             }
             else
             {
-                cout << "No events in the queue.\n";
+                cout << RED << "No events in the queue.\n\n"
+                     << RESET;
             }
             break;
         }
         case 3:
+            cout << CYAN << "\nAll Events:\n"
+                 << RESET;
             eventQueue.printQueue();
             break;
         case 4:
         {
-            cout << "Enter the name of the event to edit: ";
+            cout << YELLOW << "Enter the name of the event to edit: " << RESET;
             string eventName;
             cin >> eventName;
             Event *eventToEdit = eventQueue.findEventByName(eventName);
             if (eventToEdit)
             {
-                cout << "Editing event: " << eventName << endl;
+                cout << GREEN << "Editing event: " << eventName << RESET << endl;
                 Event updatedEvent = Event::AddEvent();
                 eventQueue.updateEvent(eventToEdit, updatedEvent);
             }
             else
             {
-                cout << "Event not found." << endl;
+                cout << RED << "Event not found." << RESET << endl;
             }
             break;
         }
@@ -83,34 +98,37 @@ int main()
         {
             if (eventQueue.isEmpty())
             {
-                cout << "Queue is Empty!\n";
-                break;
+                cout << RED << "Queue is Empty!\n\n"
+                     << RESET;
             }
             else
             {
                 eventQueue.clear();
                 eventQueue.clearFromFile(filename);
-                cout << "All events cleared.\n";
-                break;
+                cout << GREEN << "All events cleared.\n\n"
+                     << RESET;
             }
+            break;
         }
         case 7:
-            cout << "Instructions:\n";
-            cout << "1. Add Event: Add a new event to the scheduler.\n";
-            cout << "2. View Next Event: View the next event in the queue.\n";
-            cout << "3. Print All Events: Print all events in the queue.\n";
-            cout << "4. Edit Event: Edit the details of an existing event.\n";
-            cout << "5. Remove Next Event: Remove the next event from the queue.\n";
-            cout << "6. Clear All Events: Clear all events from the queue.\n";
-            cout << "7. Help/Instructions: View instructions on how to use the scheduler.\n";
-            cout << "8. Exit: Exit the scheduler.\n";
+            cout << CYAN << "Instructions:\n\n"
+                 << RESET;
+            cout << GREEN << "1. Add Event: " << RESET << "Add a new event to the scheduler.\n";
+            cout << GREEN << "2. View Next Event: " << RESET << "View the next event in the queue.\n";
+            cout << GREEN << "3. Print All Events: " << RESET << "Print all events in the queue.\n";
+            cout << GREEN << "4. Edit Event: " << RESET << "Edit the details of an existing event.\n";
+            cout << GREEN << "5. Remove Next Event: " << RESET << "Remove the next event from the queue.\n";
+            cout << GREEN << "6. Clear All Events: " << RESET << "Clear all events from the queue.\n";
+            cout << GREEN << "7. Help/Instructions: " << RESET << "View instructions on how to use the scheduler.\n";
+            cout << GREEN << "8. Exit: " << RESET << "Exit the scheduler.\n\n";
             break;
         case 8:
             eventQueue.saveToFile(filename);
             flag = false;
             break;
         default:
-            cout << "Invalid choice. Please try again." << endl;
+            cout << RED << "Invalid choice. Please try again.\n"
+                 << RESET;
         }
     }
 
