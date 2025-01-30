@@ -31,7 +31,7 @@ It uses a priority queue to ensure that events are processed based on their prio
    git clone https://github.com/CodeForgeLabs/EventScheduler
    ```
 
-2. Go to the cloned repository and run the make command(need Make for this to work)
+2. Go to the cloned repository and run the make command (need Make for this to work)
 
    ```sh
    cd EventScheduler
@@ -49,4 +49,7 @@ It uses a priority queue to ensure that events are processed based on their prio
    ```sh
    ./main
    ```
-
+   or on Windows
+   ```sh
+   main.exe
+   ```
