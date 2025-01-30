@@ -40,7 +40,7 @@ It uses a priority queue to ensure that events are processed based on their prio
    or alternatively run the following command
    ```sh
    cd EventScheduler
-   g++ main.o priorityQueue.o event.o -o main
+   g++ main.cpp priorityQueue.cpp event.cpp -o main
    ```
    
 
