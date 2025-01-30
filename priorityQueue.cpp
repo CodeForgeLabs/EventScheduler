@@ -106,39 +106,43 @@ public:
     void loadFromFile(const string &filename)
     {
         ifstream file(filename);
-        if (!file.is_open())
+
+        if (!file.is_open()) //if the file doesnt exist
         {
-           cout << RED << "Error when loading file";
+            ofstream newFile(filename);
+            if (!newFile)
+            {
+                cout << RED << "Error creating file: " << filename << RESET << endl;
+                return;
+            }
+            newFile.close(); 
+            return; 
         }
 
         string line;
-        getline(file, line); // Skip header 
-
+        getline(file, line); // Skip header
 
         while (getline(file, line))
         {
             stringstream ss(line);
             string idStr, name, date, event_time, priorityStr;
 
-            // Parse each field
+            // get each field
             getline(ss, idStr, ',');
             getline(ss, name, ',');
             getline(ss, date, ',');
             getline(ss, event_time, ',');
             getline(ss, priorityStr, ',');
 
-            //TODO : when loading events from file , id replication issue might occur
-
-            // Convert strings to int 
+            // Convert strings to int
             int id = stoi(idStr);
             int priority = stoi(priorityStr);
 
-
             Event event(name, date, event_time, priority);
-            event.id = id; 
+            event.id = id;
             enqueue(event);
         }
-        file.clear();
+
         file.close();
     }
 

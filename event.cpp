@@ -77,7 +77,7 @@ Event Event::AddEvent()
         ss >> get_time(&date_tm, "%Y-%m-%d");
         if (ss.fail())
         {
-            cout << RED << "Invalid date format. Please try again." << endl;
+            cout << RED << "Invalid date format. Please try again." << RESET<<  endl;
             ss.clear();
         }
         else
@@ -86,7 +86,7 @@ Event Event::AddEvent()
             tm *now_tm = localtime(&now);
             if (mktime(&date_tm) <= mktime(now_tm))
             {
-                cout << RED << "The date is in the past. Please enter a future date." << endl;
+                cout << RED << "The date is in the past. Please enter a future date." << RESET<< endl;
             }
             else
             {
@@ -103,7 +103,7 @@ Event Event::AddEvent()
         ss >> get_time(&time_tm, "%H:%M");
         if (ss.fail())
         {
-            cout << RED << "Invalid time format. Please try again." << endl;
+            cout << RED << "Invalid time format. Please try again." <<RESET <<endl;
             ss.clear();
         }
         else

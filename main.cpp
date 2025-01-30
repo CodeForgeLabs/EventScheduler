@@ -2,6 +2,7 @@
 #include "priorityQueue.cpp"
 #include "event.h"
 #include <limits>
+#include <fstream>
 
 using namespace std;
 
@@ -18,7 +19,6 @@ int main()
     bool flag = true;
     string filename = "events.txt";
     eventQueue.loadFromFile(filename);
-
     while (flag)
     {
         cout << CYAN << "\n-------------Menu--------------\n"
