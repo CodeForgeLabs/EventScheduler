@@ -10,8 +10,8 @@ It uses a priority queue to ensure that events are processed based on their prio
 - Add new events with a name, date, time, and priority.
 - View the next event in the queue.
 - Print all events in the queue.
-- Edit existing events (functionality to be implemented).
-- Remove the next event from the queue (functionality to be implemented).
+- Edit existing events.
+- Remove the next event from the queue.
 - Clear all events from the queue.
 - Display help/instructions.
 - Exit the application.
